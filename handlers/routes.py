@@ -20,5 +20,9 @@ def configure_routes(app, bot):
 	    return 'About'
 
 	@app.route('/bot', methods=['POST'])
-	def bot():
-	    return 'Bot'
+	def webhook():
+		update = telebot.types.Update.de_json(
+			request.stream.read().decode('utf-8')
+		)
+		bot.process_new_updates([update])
+		return 'ok', 200
