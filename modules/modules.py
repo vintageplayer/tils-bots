@@ -59,6 +59,36 @@ def update_doc_text(connection, telegram_user_id, new_doc_text):
         connection.rollback()
         print(f"The error '{e}' occurred")
 
+# Function to retrieve a draft message by telegram_user_id
+def retrieve_draft_message(connection, telegram_user_id):
+    cursor = connection.cursor()
+    try:
+        cursor.execute("""
+            SELECT * FROM til.notes
+            WHERE telegram_user_id = %s AND is_draft = true
+        """, (telegram_user_id,))
+        record = cursor.fetchone()
+        return record
+        # print("Retrieved record:")
+        # print(record)
+    except Error as e:
+        print(f"The error '{e}' occurred")
+
+# Function to retrieve a draft message by telegram_user_id
+def retrieve_user_messages(connection, telegram_username):
+    cursor = connection.cursor()
+    try:
+        cursor.execute("""
+            SELECT * FROM til.notes
+            WHERE telegram_username = %s AND is_draft = true
+        """, (telegram_username,))
+        record = cursor.fetchone()
+        return record
+        # print("Retrieved record:")
+        # print(record)
+    except Error as e:
+        print(f"The error '{e}' occurred")
+
 # Function to update doc_text for a given start_message_id
 def mark_note_as_completed(connection, telegram_user_id):
     cursor = connection.cursor()

@@ -42,8 +42,9 @@ def command_start(message):
 @bot.message_handler(commands=['end'])
 def command_end(message):
     telegram_user_id = message.from_user.id 
+    record = modules.retrieve_draft_message(connection, telegram_user_id)
     modules.mark_note_as_completed(connection, telegram_user_id)
-    bot.reply_to(message, f"Notes Stored. You can access them here:")
+    bot.reply_to(message, f"Notes Stored. You can access them here: {record}")
 
 @bot.message_handler(func=lambda message: True, content_types=['text'])
 def echo_message(message):
