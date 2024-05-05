@@ -3,7 +3,7 @@ from flask import request
 import time
 from dotenv import load_dotenv
 import os
-
+from modules import rag
 
 def configure_routes(app, bot):
 	bot.remove_webhook()
@@ -14,6 +14,14 @@ def configure_routes(app, bot):
 	@app.route('/')
 	def home():
 	    return 'Hello, World!'
+
+	@app.route('/posts/<username>')
+	def get_user_posts(username):
+	    return 'Hello, World!'
+
+	@app.route('/posts/<post_id>')
+	def get_post(post_id):
+	    return {''}
 
 	@app.route('/about')
 	def about():

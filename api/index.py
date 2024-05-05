@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 from handlers.routes import configure_routes
 from modules import modules
 import os
+from modules import rag
 
 load_dotenv()
 
@@ -42,9 +43,13 @@ def command_start(message):
 @bot.message_handler(commands=['end'])
 def command_end(message):
     telegram_user_id = message.from_user.id 
-    record = modules.retrieve_draft_message(connection, telegram_user_id)
+    document_record = modules.retrieve_draft_message(connection, telegram_user_id)
     modules.mark_note_as_completed(connection, telegram_user_id)
-    bot.reply_to(message, f"Notes Stored. You can access them here: {record}")
+    if document_record:
+        unique_doc_id = str(document_record[0])
+        doc_text = document_record[6]
+        rag.insert(unique_doc_id, doc_text)
+        bot.reply_to(message, f"Notes Stored. You can access them here: {document_record}")
 
 @bot.message_handler(func=lambda message: True, content_types=['text'])
 def echo_message(message):

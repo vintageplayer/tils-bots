@@ -10,7 +10,6 @@ load_dotenv()
 PINECONE_API_KEY = os.getenv('PINECONE_API_KEY')
 OPENAI_API_KEY= os.getenv('OPENAI_API_KEY')
 openai_client = OpenAI(api_key=OPENAI_API_KEY)
-pinecone_index = pinecone_client(PINECONE_API_KEY)
 
 def pinecone_client(PINECONE_API_KEY): 
     pc = Pinecone(api_key=PINECONE_API_KEY)
@@ -44,6 +43,7 @@ def pinecone_client(PINECONE_API_KEY):
     pinecone_index.describe_index_stats()    
     return pinecone_index 
 
+pinecone_index = pinecone_client(PINECONE_API_KEY)
 
 def get_embedding(message, openai_client, model):
    message = message.replace("\n", " ")   
