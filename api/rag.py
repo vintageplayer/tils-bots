@@ -10,7 +10,7 @@ load_dotenv()
 PINECONE_API_KEY = os.getenv('PINECONE_API_KEY')
 OPENAI_API_KEY= os.getenv('OPENAI_API_KEY')
 openai_client = OpenAI(api_key=OPENAI_API_KEY)
-
+pinecone_index = pinecone_client(PINECONE_API_KEY)
 
 def pinecone_client(PINECONE_API_KEY): 
     pc = Pinecone(api_key=PINECONE_API_KEY)
@@ -73,7 +73,7 @@ The mimetic theory of desire, an explanation of human behavior and culture, orig
 
 """
 
-def insert(message_id, message, pinecone_index): 
+def insert(message_id, message): 
     embed = get_embedding(message, openai_client, model="text-embedding-ada-002")
     print('created embedding')
     metadata = {'original':message}
@@ -82,7 +82,7 @@ def insert(message_id, message, pinecone_index):
     print('pinecone_index upsert done')
 
 
-def search(message_id, message, pinecone_index):
+def search(message_id, message):
     embed = get_embedding(message, openai_client, model="text-embedding-ada-002")
     print('created embedding')
     results = pinecone_index.query(
@@ -94,7 +94,6 @@ def search(message_id, message, pinecone_index):
     return recommendations
 
 
-pinecone_index = pinecone_client(PINECONE_API_KEY)
 # insert(message_id3, message3, pinecone_index)
-search(message_id, message, pinecone_index)
+# search(message_id, message)
 
