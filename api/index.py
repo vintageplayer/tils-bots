@@ -49,7 +49,8 @@ def command_end(message):
         unique_doc_id = str(document_record[0])
         doc_text = document_record[6]
         rag.insert(unique_doc_id, doc_text)
-        bot.reply_to(message, f"Notes Stored. You can access them here: {document_record}")
+        document_link = 'https://tils-app.vercel.app/'
+        bot.reply_to(message, f"Notes Stored. You can access them here: {document_link}")
 
 @bot.message_handler(func=lambda message: True, content_types=['text'])
 def echo_message(message):
